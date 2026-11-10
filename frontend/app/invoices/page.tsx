@@ -1,0 +1,19 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+import Sidebar from "@/components/Sidebar";
+import { useBusiness } from "@/components/BusinessProvider";
+import { apiFetch } from "@/lib/api";
+
+type Invoice = { id?: string; invoice_number: string; client_name: string; amount: number; issue_date: string; due_date: string; status: string };
+const empty: Invoice = { invoice_number: "", client_name: "", amount: 0, issue_date: new Date().toISOString().slice(0, 10), due_date: new Date().toISOString().slice(0, 10), status: "pending" };
+
+export default function InvoicesPage() {
+  const { activeBusinessId } = useBusiness(); const [invoices, setInvoices] = useState<Invoice[]>([]); const [form, setForm] = useState(empty); const [message, setMessage] = useState("");
+  async function load() { if (!activeBusinessId) return; const response = await apiFetch(`/api/businesses/${activeBusinessId}/invoices`); setInvoices((await response.json()).invoices || []); }
+  useEffect(() => { load(); }, [activeBusinessId]);
+  async function submit(event: FormEvent) { event.preventDefault(); if (!activeBusinessId) return; const response = await apiFetch(`/api/businesses/${activeBusinessId}/invoices`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) }); const body = await response.json(); setMessage(response.ok ? "Invoice added." : (typeof body.detail === "string" ? body.detail : JSON.stringify(body.detail || "Unable to add invoice."))); if (response.ok) { setForm(empty); load(); } }
+  return <div className="flex min-h-screen bg-ink-900"><Sidebar /><main className="flex-1 max-w-6xl px-10 py-8"><h1 className="font-display text-2xl font-semibold text-white">Invoices</h1><p className="mt-1 mb-8 text-sm text-ash-400">Track receivables and payment status.</p><form onSubmit={submit} className="grid grid-cols-2 gap-3 rounded-xl border border-ink-700 bg-ink-800 p-5 md:grid-cols-6"><Input label="Invoice #" value={form.invoice_number} onChange={(value) => setForm({ ...form, invoice_number: value })} /><Input label="Client" value={form.client_name} onChange={(value) => setForm({ ...form, client_name: value })} /><Input label="Amount" type="number" value={String(form.amount)} onChange={(value) => setForm({ ...form, amount: Number(value) })} /><Input label="Issue date" type="date" value={form.issue_date} onChange={(value) => setForm({ ...form, issue_date: value })} /><Input label="Due date" type="date" value={form.due_date} onChange={(value) => setForm({ ...form, due_date: value })} /><button className="self-end rounded-md bg-signal-indigo px-3 py-2 text-xs text-white">Add invoice</button></form>{message && <p className="mt-3 text-sm text-ash-300">{message}</p>}<div className="mt-6 overflow-hidden rounded-xl border border-ink-700 bg-ink-800"><div className="grid grid-cols-5 border-b border-ink-700 px-5 py-3 text-xs uppercase text-ash-400"><span>Invoice</span><span>Client</span><span>Amount</span><span>Due</span><span>Status</span></div>{invoices.map((invoice) => <div key={invoice.id} className="grid grid-cols-5 border-b border-ink-700 px-5 py-3 text-sm text-ash-200"><span className="font-mono">{invoice.invoice_number}</span><span>{invoice.client_name}</span><span className="font-mono">₹{Number(invoice.amount).toLocaleString("en-IN")}</span><span>{invoice.due_date}</span><span className="capitalize text-signal-amber">{invoice.status}</span></div>)}{invoices.length === 0 && <p className="px-5 py-6 text-sm text-ash-400">No invoices recorded.</p>}</div></main></div>;
+}
+
+function Input({ label, value, onChange, type = "text" }: { label: string; value: string; onChange: (value: string) => void; type?: string }) { return <label className="text-xs text-ash-400">{label}<input required type={type} value={value} onChange={(event) => onChange(event.target.value)} className="mt-2 w-full rounded-md border border-ink-600 bg-ink-900 px-2 py-2 text-xs text-white" /></label>; }
