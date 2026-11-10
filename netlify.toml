@@ -12,6 +12,6 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://finpilot-backend.onrender.com/api/:splat"
+  to = "https://finpilot-backend-wre0.onrender.com/api/:splat"
   status = 200
   force = false

@@ -16,8 +16,8 @@ The repository contains `render.yaml` and `backend/Dockerfile`.
    - `SUPABASE_URL`: Your Supabase project URL (e.g. `https://your-ref.supabase.co`)
    - `SUPABASE_SERVICE_KEY`: Your Supabase `service_role` secret key
    - `FRONTEND_URL`: `*` (or your custom Netlify domain)
-6. Click **Apply** / **Deploy**. Once built, Render will assign a public URL like:
-   `https://finpilot-backend.onrender.com`
+6. Click **Apply** / **Deploy**. Render has assigned your live primary URL:
+   `https://finpilot-backend-wre0.onrender.com`
 
 ---
 
