@@ -23,3 +23,16 @@ body {
 .tabular {
   font-variant-numeric: tabular-nums;
 }
+
+/* Light mode keeps the same Finpilot layout while switching to a bright, readable palette. */
+.light body { background-color: #F4F7FB; color: #172033; }
+.light .bg-ink-900 { background-color: #F4F7FB !important; }
+.light .bg-ink-950 { background-color: #FFFFFF !important; }
+.light .bg-ink-800 { background-color: #FFFFFF !important; }
+.light .bg-ink-700 { background-color: #E7ECF4 !important; }
+.light .border-ink-700, .light .border-ink-600 { border-color: #D6DFEC !important; }
+.light .text-white { color: #172033 !important; }
+.light .text-ash-200 { color: #34415A !important; }
+.light .text-ash-300 { color: #52617A !important; }
+.light .text-ash-400 { color: #66758E !important; }
+.light .hover\:bg-ink-800:hover { background-color: #EEF2F7 !important; }

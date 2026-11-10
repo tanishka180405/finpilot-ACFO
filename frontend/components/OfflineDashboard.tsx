@@ -9,7 +9,7 @@ const unhealthyRevenue = [260, 244, 229, 215, 202, 190, 178, 168, 157, 148, 139,
 const mixedRevenue = [380, 430, 360, 510, 405, 590, 455, 620, 480, 680, 520, 735];
 const healthyCashflow = [70, 82, 96, 110, 125, 140, 154, 170, 185, 201, 220, 238];
 const unhealthyCashflow = [-390, -405, -421, -438, -454, -470, -487, -503, -520, -536, -552, -569];
-const mixedCashflow = [90, -130, 75, -180, 120, -95, 145, -210, 160, -115, 190, -80];
+const mixedCashflow = [90, 120, -130, -80, 75, 140, -180, 110, 95, -95, -60, 190];
 
 function money(value: number) { return `₹${Math.abs(value).toLocaleString("en-IN")}k`; }
 

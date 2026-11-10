@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
+  ComposedChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -50,10 +52,11 @@ function KpiCard({
   const toneColor =
     tone === "good" ? "text-signal-emerald" : tone === "warn" ? "text-signal-amber" : "text-white";
   return (
-    <div className="bg-ink-800 border border-ink-700 rounded-xl p-5">
-      <p className="text-xs text-ash-400 uppercase tracking-wide">{label}</p>
-      <p className={`font-mono text-2xl mt-2 tabular ${toneColor}`}>{value}</p>
-      {sub && <p className="text-xs text-ash-400 mt-1">{sub}</p>}
+    <div className="group relative overflow-hidden rounded-2xl border border-ink-700 bg-ink-800/90 p-5 shadow-lg shadow-black/10 transition hover:-translate-y-0.5 hover:border-signal-indigo/40">
+      <div className={`absolute inset-x-0 top-0 h-0.5 ${tone === "good" ? "bg-signal-emerald" : tone === "warn" ? "bg-signal-amber" : "bg-signal-indigo"}`} />
+      <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-ash-400">{label}</p>
+      <p className={`mt-3 font-mono text-2xl font-semibold tabular ${toneColor}`}>{value}</p>
+      {sub && <p className="mt-2 text-xs text-ash-400">{sub}</p>}
     </div>
   );
 }
@@ -98,10 +101,13 @@ function AuthenticatedDashboard() {
 
   const chartData = data
     ? [
-        ...data.historical.map((h) => ({ month: h.month, actual: h.net_cashflow })),
+        ...data.historical.map((h) => ({ month: h.month, actual: h.net_cashflow, cashflow: h.net_cashflow, positiveCashflow: h.net_cashflow >= 0 ? h.net_cashflow : null, negativeCashflow: h.net_cashflow < 0 ? h.net_cashflow : null })),
         ...data.forecast.map((f) => ({
           month: f.month,
           predicted: f.predicted_net_cashflow,
+          cashflow: f.predicted_net_cashflow,
+          positiveCashflow: f.predicted_net_cashflow >= 0 ? f.predicted_net_cashflow : null,
+          negativeCashflow: f.predicted_net_cashflow < 0 ? f.predicted_net_cashflow : null,
           lower: f.lower_bound,
           upper: f.upper_bound,
         })),
@@ -112,15 +118,17 @@ function AuthenticatedDashboard() {
     <div className="flex min-h-screen bg-ink-900">
       <Sidebar />
 
-      <main className="flex-1 px-10 py-8 max-w-6xl">
-        <div className="flex items-baseline justify-between mb-8">
+      <main className="min-w-0 flex-1 bg-[radial-gradient(circle_at_top_right,_rgba(99,102,241,0.10),_transparent_35%)] px-5 py-7 md:px-10 md:py-9">
+        <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-display text-2xl font-semibold text-white">Overview</h1>
-            <p className="text-sm text-ash-400 mt-1">{activeBusiness?.name || "No business selected"} · updated moments ago</p>
+            <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-signal-indigo">Financial command center</p>
+            <h1 className="font-display text-3xl font-semibold tracking-tight text-white">Overview</h1>
+            <p className="mt-2 text-sm text-ash-400">{activeBusiness?.name || "No business selected"} <span className="mx-1 text-ink-600">•</span> updated moments ago</p>
           </div>
-          <div className="flex items-center gap-2 text-xs font-mono text-ash-400 border border-ink-700 rounded-lg px-3 py-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-signal-emerald" />
-            live
+          <div className="flex items-center gap-2 rounded-full border border-signal-emerald/20 bg-signal-emerald/10 px-3 py-1.5 text-xs font-mono text-signal-emerald">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-signal-emerald" />
+            LIVE MONITORING
           </div>
         </div>
 
@@ -137,8 +145,8 @@ function AuthenticatedDashboard() {
 
         {data && (
           <>
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <KpiCard label="Cash position" value={formatINR(data.current_cash_position)} />
+            <div className="mb-6 grid gap-4 md:grid-cols-3">
+              <KpiCard label="Cash position" value={formatINR(data.current_cash_position)} tone={data.current_cash_position < 0 ? "warn" : "good"} />
               <KpiCard
                 label="Runway"
                 value={data.runway_months ? `${data.runway_months} mo` : "Healthy"}
@@ -147,16 +155,18 @@ function AuthenticatedDashboard() {
               <KpiCard label="Forecast horizon" value="12 months" sub="80% confidence interval" />
             </div>
 
-            <div className="bg-ink-800 border border-ink-700 rounded-xl p-5 mb-6">
-              <p className="text-sm text-ash-200 leading-relaxed">{data.summary}</p>
+            <div className="mb-6 rounded-2xl border border-signal-indigo/20 bg-gradient-to-r from-signal-indigo/10 via-ink-800 to-ink-800 p-5 shadow-lg shadow-black/10">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.18em] text-signal-indigo">CFO insight</p>
+              <p className="text-sm leading-relaxed text-ash-200">{data.summary}</p>
             </div>
 
-            <div className="bg-ink-800 border border-ink-700 rounded-xl p-5 mb-6 h-80">
-              <p className="font-display text-sm font-medium text-white mb-4">
+            <div className="mb-6 h-80 rounded-2xl border border-ink-700 bg-ink-800/90 p-5 shadow-lg shadow-black/10">
+              <p className="mb-1 font-display text-sm font-medium text-white">
                 Net cash flow — actual vs. forecast
               </p>
+              <p className="mb-4 text-xs text-ash-400">Actual performance compared with forecast</p>
               <ResponsiveContainer width="100%" height="85%">
-                <AreaChart data={chartData}>
+                <ComposedChart data={chartData}>
                   <defs>
                     <linearGradient id="actualFill" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#34D399" stopOpacity={0.25} />
@@ -165,6 +175,10 @@ function AuthenticatedDashboard() {
                     <linearGradient id="predictedFill" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#6366F1" stopOpacity={0.25} />
                       <stop offset="100%" stopColor="#6366F1" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="negativeFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#FB7185" stopOpacity={0.2} />
+                      <stop offset="100%" stopColor="#FB7185" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#1A2438" vertical={false} />
@@ -178,7 +192,7 @@ function AuthenticatedDashboard() {
                       fontSize: 12,
                     }}
                   />
-                  <Area type="monotone" dataKey="actual" stroke="#34D399" fill="url(#actualFill)" strokeWidth={2} />
+                  <Line type="monotone" dataKey="cashflow" name="Monthly cash flow" stroke="#FBBF24" strokeWidth={2.5} dot={({ cx, cy, payload }) => <circle cx={cx} cy={cy} r={4} fill={payload.cashflow < 0 ? "#FB7185" : "#34D399"} stroke="#121A2B" strokeWidth={2} />} activeDot={{ r: 6 }} />
                   <Area
                     type="monotone"
                     dataKey="predicted"
@@ -187,13 +201,14 @@ function AuthenticatedDashboard() {
                     strokeWidth={2}
                     strokeDasharray="4 4"
                   />
-                </AreaChart>
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
 
             <AgentLedger businessId={activeBusinessId || ""} />
           </>
         )}
+        </div>
       </main>
     </div>
   );

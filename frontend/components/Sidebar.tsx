@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useBusiness } from "@/components/BusinessProvider";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/dashboard" },
@@ -110,6 +111,7 @@ export default function Sidebar() {
           <p className="text-xs text-ash-400 font-mono">3 agents active</p>
         </div>
         <button onClick={signOut} className="mt-3 px-2 text-xs text-ash-400 hover:text-white">Sign out</button>
+        <ThemeToggle />
       </div>
     </aside>
   );
