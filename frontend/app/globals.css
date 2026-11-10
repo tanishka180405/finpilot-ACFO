@@ -27,12 +27,37 @@ body {
 /* Light mode keeps the same Finpilot layout while switching to a bright, readable palette. */
 .light body { background-color: #F4F7FB; color: #172033; }
 .light .bg-ink-900 { background-color: #F4F7FB !important; }
-.light .bg-ink-950 { background-color: #FFFFFF !important; }
-.light .bg-ink-800 { background-color: #FFFFFF !important; }
+.light .bg-ink-950 { background-color: #E8EEF7 !important; }
+.light .bg-ink-800 { background-color: #F1F5FA !important; }
+.light .bg-ink-800\/70 { background-color: #EAF0F8 !important; }
+.light .bg-ink-800\/90 { background-color: #E7EDF6 !important; }
 .light .bg-ink-700 { background-color: #E7ECF4 !important; }
 .light .border-ink-700, .light .border-ink-600 { border-color: #D6DFEC !important; }
 .light .text-white { color: #172033 !important; }
 .light .text-ash-200 { color: #34415A !important; }
 .light .text-ash-300 { color: #52617A !important; }
-.light .text-ash-400 { color: #66758E !important; }
+.light .text-ash-400 { color: #53627A !important; }
+.light .text-signal-indigo { color: #4F46E5 !important; }
+.light .text-signal-emerald { color: #047857 !important; }
+.light .text-signal-amber { color: #B45309 !important; }
+.light .text-signal-rose { color: #BE123C !important; }
+.light .bg-signal-indigo.text-white, .light .bg-signal-rose.text-white { color: #FFFFFF !important; }
+.light .bg-signal-emerald.text-ink-950, .light .bg-signal-amber.text-ink-950 { color: #172033 !important; }
 .light .hover\:bg-ink-800:hover { background-color: #EEF2F7 !important; }
+
+/* High-contrast text pass for light mode. */
+html.light h1, html.light h2, html.light h3, html.light h4 { color: #111827 !important; }
+html.light p, html.light label, html.light li { color: #334155; }
+html.light aside p, html.light aside a, html.light aside button { color: #334155; }
+html.light main .text-white, html.light aside .text-white { color: #111827 !important; }
+html.light main .text-ash-400, html.light aside .text-ash-400 { color: #475569 !important; }
+html.light main .text-ash-300, html.light aside .text-ash-300 { color: #334155 !important; }
+html.light input, html.light select { color: #172033 !important; background-color: #FFFFFF !important; }
+html.light input::placeholder { color: #64748B !important; }
+html.light .bg-signal-indigo, html.light .bg-signal-rose { color: #FFFFFF !important; }
+html.light main .bg-ink-800\/70 p { color: #1E293B !important; }
+html.light main .bg-ink-800\/70 p.text-ash-400 { color: #475569 !important; }
+html.light main .bg-ink-800\/90 { color: #172033 !important; }
+html.light main .bg-gradient-to-r { background-image: none !important; background-color: #E7EDF6 !important; }
+html.light main .bg-ink-800\/90 p, html.light main .bg-ink-800\/90 h2 { color: #172033 !important; }
+html.light main .bg-ink-800\/90 p.text-ash-400 { color: #475569 !important; }

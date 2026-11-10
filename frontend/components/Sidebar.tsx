@@ -9,6 +9,7 @@ import { useBusiness } from "@/components/BusinessProvider";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const NAV_ITEMS = [
+  { label: "Home", href: "/" },
   { label: "Overview", href: "/dashboard" },
   { label: "Ask Finpilot-Autonoumous CFO", href: "/chat" },
   { label: "Cash flow", href: "/cashflow" },
@@ -66,9 +67,9 @@ export default function Sidebar() {
   return (
     <aside className="w-60 shrink-0 border-r border-ink-700 bg-ink-950 min-h-screen flex flex-col">
       <div className="px-6 py-6 border-b border-ink-700">
-        <p className="font-display font-semibold text-lg tracking-tight text-white">
+        <Link href="/" className="block font-display font-semibold text-lg tracking-tight text-white hover:text-signal-indigo">
           Finpilot-Autonoumous CFO
-        </p>
+        </Link>
         <p className="text-xs text-ash-400 mt-0.5">Autonomous CFO</p>
         {businessesLoading && visibleBusinesses.length === 0 ? <p className="mt-4 text-xs font-mono text-ash-400">Loading businesses...</p> : (
           <>
