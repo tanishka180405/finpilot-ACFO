@@ -1,5 +1,13 @@
 # Finpilot — Autonomous CFO Operating System
 
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/tanishka180405/finpilot-ACFO)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/tanishka180405/finpilot-ACFO)
+
+## 1-Click Cloud Deployment
+
+- **Backend (Render)**: Click the **Deploy to Render** button above or open [Render Deploy](https://render.com/deploy?repo=https://github.com/tanishka180405/finpilot-ACFO). It reads `render.yaml` and starts your FastAPI service.
+- **Frontend (Netlify)**: Click the **Deploy to Netlify** button above or open [Netlify Deploy](https://app.netlify.com/start/deploy?repository=https://github.com/tanishka180405/finpilot-ACFO). It reads `netlify.toml` and starts your Next.js application.
+
 ## Run it
 
 Double-click `Start-Finpilot.cmd` (or `Start-Finova.cmd`). It starts (or restarts) both services and opens the app at http://localhost:5050. The first run installs required packages automatically.
