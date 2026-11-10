@@ -9,9 +9,10 @@
 [build.environment]
   NODE_VERSION = "20"
   NEXT_PUBLIC_DISABLE_AUTH = "true"
+  BACKEND_URL = "https://finpilot-backend-wre0.onrender.com"
 
 [[redirects]]
   from = "/api/*"
   to = "https://finpilot-backend-wre0.onrender.com/api/:splat"
   status = 200
-  force = false
+  force = true

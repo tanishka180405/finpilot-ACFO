@@ -14,7 +14,8 @@ from routes.operations_routes import router as operations_router
 
 load_dotenv()
 
-frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:5050")
+frontend_url = os.environ.get("FRONTEND_URL", "*")
+allowed_origins = [origin.strip() for origin in frontend_url.split(",") if origin.strip()]
 
 app = FastAPI(
     title="Finpilot API",
@@ -22,13 +23,22 @@ app = FastAPI(
     version="0.1.0",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[origin.strip() for origin in frontend_url.split(",") if origin.strip()],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+if "*" in allowed_origins or not allowed_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 app.include_router(cashflow_router)
 app.include_router(agent_runs_router)
