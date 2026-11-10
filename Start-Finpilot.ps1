@@ -53,24 +53,27 @@ if (Test-Path $nextCache) {
 }
 
 if (-not (Test-Path $frontendEnv)) {
-    throw "Missing frontend/.env.local. Copy frontend/.env.example to frontend/.env.local and enter your Supabase public URL and anon key."
+    if (Test-Path (Join-Path $frontendDir ".env.example")) {
+        Copy-Item (Join-Path $frontendDir ".env.example") $frontendEnv -Force
+    }
 }
 
+$disableAuth = Get-EnvValue $frontendEnv "NEXT_PUBLIC_DISABLE_AUTH"
 $frontendPublicUrl = Get-EnvValue $frontendEnv "NEXT_PUBLIC_SUPABASE_URL"
 $frontendAnonKey = Get-EnvValue $frontendEnv "NEXT_PUBLIC_SUPABASE_ANON_KEY"
-if (-not $frontendPublicUrl -or -not $frontendAnonKey) {
-    throw "frontend/.env.local needs NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY before Finpilot can start."
+if ($disableAuth -ne "true" -and (-not $frontendPublicUrl -or -not $frontendAnonKey)) {
+    throw "frontend/.env.local needs NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY before Finpilot can start in live auth mode. Alternatively, set NEXT_PUBLIC_DISABLE_AUTH=true for offline mode."
 }
 
 if (-not (Test-Path $backendEnv)) {
     Copy-Item (Join-Path $backendDir ".env.example") $backendEnv -Force
 }
 
-if (-not (Get-EnvValue $backendEnv "SUPABASE_URL")) {
+if (-not (Get-EnvValue $backendEnv "SUPABASE_URL") -and $frontendPublicUrl) {
     Set-EnvValue $backendEnv "SUPABASE_URL" $frontendPublicUrl
 }
 
-if (-not (Get-EnvValue $backendEnv "SUPABASE_SERVICE_KEY")) {
+if ($disableAuth -ne "true" -and (-not (Get-EnvValue $backendEnv "SUPABASE_SERVICE_KEY"))) {
     throw "Created backend/.env. Add your Supabase service_role key to SUPABASE_SERVICE_KEY once, then run start again. Never use the public anon key here."
 }
 
