@@ -61,3 +61,12 @@ html.light main .bg-ink-800\/90 { color: #172033 !important; }
 html.light main .bg-gradient-to-r { background-image: none !important; background-color: #E7EDF6 !important; }
 html.light main .bg-ink-800\/90 p, html.light main .bg-ink-800\/90 h2 { color: #172033 !important; }
 html.light main .bg-ink-800\/90 p.text-ash-400 { color: #475569 !important; }
+body:has(aside.fixed) main { margin-left: 280px !important; padding-top: 5.5rem !important; }
+aside.fixed { left: 0; right: auto; width: 280px; height: 100vh; max-height: 100vh; flex-direction: column; align-items: stretch; overflow-y: auto; overflow-x: hidden; }
+aside.fixed > div:first-child { width: 100%; flex-direction: column; align-items: stretch; border-bottom: 1px solid #1A2438; padding: 1.25rem; }
+aside.fixed > nav { position: fixed; left: 280px; right: 0; top: 0; z-index: 51; display: flex; height: 76px; width: auto; max-width: none; overflow-x: auto; border-bottom: 1px solid #1A2438; background: #070B14; padding: 0.75rem 1rem; }
+aside.fixed > div:last-child { width: 100%; margin-top: auto; border-left: 0; border-top: 1px solid #1A2438; }
+aside.fixed select { margin-top: 1rem !important; width: 100% !important; }
+aside.fixed input { width: 120px !important; }
+aside.fixed > div:first-child > div, aside.fixed > div:first-child > button, aside.fixed > div:first-child > a { margin-top: 0.75rem !important; width: 100% !important; white-space: nowrap; }
+html.light aside.fixed > nav { background: #E8EEF7; border-color: #D6DFEC; }

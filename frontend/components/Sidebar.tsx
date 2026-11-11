@@ -65,8 +65,8 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-60 shrink-0 border-r border-ink-700 bg-ink-950 min-h-screen flex flex-col">
-      <div className="px-6 py-6 border-b border-ink-700">
+    <aside className="fixed left-0 right-0 top-0 z-50 flex h-[76px] min-h-0 w-full items-center overflow-x-auto overflow-y-hidden border-b border-ink-700 bg-ink-950 shadow-xl shadow-black/10">
+      <div className="flex shrink-0 items-center gap-3 px-4 py-2">
         <Link href="/" className="block font-display font-semibold text-lg tracking-tight text-white hover:text-signal-indigo">
           Finpilot-Autonoumous CFO
         </Link>
@@ -79,6 +79,7 @@ export default function Sidebar() {
             {process.env.NEXT_PUBLIC_DISABLE_AUTH === "true" && <div className="mt-2 grid grid-cols-3 gap-1">
               {OFFLINE_DEMOS.map((demo) => <button key={demo.id} type="button" onClick={() => setActiveBusinessId(demo.id)} className={`rounded px-1 py-1.5 text-[10px] ${activeBusinessId === demo.id ? "bg-signal-indigo text-white" : "border border-ink-600 text-ash-400 hover:text-white"}`}>{demo.id === "demo-healthy" ? "Healthy" : demo.id === "demo-mixed" ? "Mixed" : "Unhealthy"}</button>)}
             </div>}
+            <Link href="/transactions" className="mt-3 block w-full rounded-md border border-signal-indigo/40 px-2 py-1.5 text-left text-xs text-signal-indigo hover:bg-signal-indigo/10">Upload business data (CSV)</Link>
             <div className="mt-3">
               <p className="text-xs text-ash-400">Add another business</p>
               <div className="mt-2 flex gap-1"><input value={newBusinessName} onChange={(event) => setNewBusinessName(event.target.value)} placeholder="Business name" className="min-w-0 flex-1 rounded-md border border-ink-600 bg-ink-900 px-2 py-1.5 text-xs text-white" /><button onClick={addBusiness} className="rounded-md bg-signal-indigo px-2 text-xs text-white">Add</button></div>
@@ -90,12 +91,12 @@ export default function Sidebar() {
         )}
       </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex shrink-0 flex-nowrap items-center gap-1 px-3 py-2">
         {NAV_ITEMS.map((item) => (
           <Link
             key={item.label}
             href={item.href}
-            className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm transition ${
+            className={`block shrink-0 whitespace-nowrap rounded-lg px-3 py-2.5 text-left text-sm transition ${
               pathname === item.href
                 ? "bg-signal-indigo/10 text-white border border-signal-indigo/30"
                 : "text-ash-400 hover:bg-ink-800 hover:text-ash-200 border border-transparent"
@@ -106,12 +107,12 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      <div className="px-4 py-4 border-t border-ink-700">
-        <div className="flex items-center gap-2 px-2">
+      <div className="flex shrink-0 items-center gap-3 border-l border-ink-700 px-4 py-2">
+        <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-signal-emerald" />
           <p className="text-xs text-ash-400 font-mono">3 agents active</p>
         </div>
-        <button onClick={signOut} className="mt-3 px-2 text-xs text-ash-400 hover:text-white">Sign out</button>
+        <button onClick={signOut} className="px-2 text-xs text-ash-400 hover:text-white">Sign out</button>
         <ThemeToggle />
       </div>
     </aside>
