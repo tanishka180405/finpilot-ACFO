@@ -2,6 +2,17 @@ import { supabase } from "@/lib/supabase";
 
 export async function apiFetch(path: string, options: RequestInit = {}) {
   if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const liveRes = await fetch(path, { ...options, signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (liveRes.ok) {
+        return liveRes;
+      }
+    } catch {
+      // Gracefully fall back to local presentation data if backend is waking up
+    }
     return mockApiResponse(path, options);
   }
 
